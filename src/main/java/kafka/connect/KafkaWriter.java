@@ -30,11 +30,8 @@ public class KafkaWriter {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ProducerConfig.ACKS_CONFIG, "1");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, AvroWriter.class.getName());
-        props.put(ProducerConfig.BATCH_SIZE_CONFIG,1);
-        props.put(ProducerConfig.LINGER_MS_CONFIG,100);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, AvroReader.class.getName());
 
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "emp33");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
@@ -51,7 +48,7 @@ public class KafkaWriter {
 
             employees.forEach(ec->{
                 System.out.print("Sending " + ec.getName());
-                producer.send(new ProducerRecord("newemployees", ec.getName(), ec), (x, e)->{
+                producer.send(new ProducerRecord("employeesname", ec.getName(), ec.getName()), (x, e)->{
                     logger.info("Sent  " + x +  " e " + e);
                 });
                 producer.flush();
@@ -78,7 +75,11 @@ public class KafkaWriter {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
