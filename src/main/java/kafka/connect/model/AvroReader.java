@@ -1,7 +1,5 @@
 package kafka.connect.model;
 
-import kafka.connect.model.avro.Employee;
-import org.apache.avro.Schema;
 import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.specific.SpecificDatumReader;

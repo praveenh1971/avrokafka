@@ -21,9 +21,9 @@ public class AvroWriter<T extends SpecificRecord>  implements Serializer<T> {
 
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            SpecificDatumWriter<SpecificRecord> specificDatumWriter = new SpecificDatumWriter<SpecificRecord>(record.getSchema());
+            SpecificDatumWriter<SpecificRecord> specificDatumWriter = new SpecificDatumWriter<SpecificRecord>();
            Encoder encoder = EncoderFactory.get().jsonEncoder(record.getSchema(),outputStream);
-           specificDatumWriter.write(record, encoder);
+           specificDatumWriter.write(data, encoder);
             encoder.flush();
             byte[] bytes = outputStream.toByteArray();
            return bytes;

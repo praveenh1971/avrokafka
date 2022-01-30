@@ -1,29 +1,52 @@
 package kafka.connect;
 
-import kafka.connect.model.AvroReader;
-import kafka.connect.model.AvroWriter;
-import kafka.connect.model.avro.Employee;
-import org.apache.avro.generic.GenericDatumWriter;
-import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.io.DatumWriter;
+import org.apache.avro.io.Decoder;
+import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.Encoder;
+import org.apache.avro.io.EncoderFactory;
+import org.apache.avro.specific.SpecificDatumReader;
+import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import java.time.Duration;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
 public class KafkaWriter {
     public static void main(String[] args) {
+
+        try {
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Employee employee = Employee.newBuilder().setAge(11).setName("AArush").setLastName("Marchareddy").setPhoneNumber("6094249761").build();
+
+        SpecificDatumWriter<Employee> specificDatumWriter = new SpecificDatumWriter<Employee>();
+        Encoder encoder = EncoderFactory.get().jsonEncoder(employee.getSchema(),outputStream);
+        specificDatumWriter.write(employee, encoder);
+
+            encoder.flush();
+            byte[] bytes = outputStream.toByteArray();
+            SpecificDatumReader<Employee>  datumReader = new SpecificDatumReader<Employee>(employee.getSchema());
+            Decoder decoder = DecoderFactory.get().jsonDecoder(employee.getSchema(), new ByteArrayInputStream(bytes));
+            Employee record = datumReader.read(null, decoder);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
         Logger logger = Logger.getLogger(KafkaWriter.class.getCanonicalName());
         CountDownLatch countDownLatch = new CountDownLatch(1);
         Properties props = new Properties();
