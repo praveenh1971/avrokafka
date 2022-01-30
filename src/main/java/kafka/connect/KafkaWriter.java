@@ -62,22 +62,22 @@ public class KafkaWriter {
             logger.info(e.getMessage());
         }
 
-        logger.info("CONSUMER Starting");
-        KafkaConsumer kafkaConsumer = new KafkaConsumer(props);
-        ArrayList<String> arrayList = new ArrayList<String>();
-        arrayList.add("newemployees");
-        kafkaConsumer.subscribe(arrayList);
-        ConsumerRecords records = kafkaConsumer.poll(Duration.ofMillis(1000));
-        try {
-            records.forEach(d -> {
-                logger.info( d.toString());
-
-            });
-            logger.info("CONSUMER Started");
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        logger.info("CONSUMER Starting");
+//        KafkaConsumer kafkaConsumer = new KafkaConsumer(props);
+//        ArrayList<String> arrayList = new ArrayList<String>();
+//        arrayList.add("newemployees");
+//        kafkaConsumer.subscribe(arrayList);
+//        ConsumerRecords records = kafkaConsumer.poll(Duration.ofMillis(1000));
+//        try {
+//            records.forEach(d -> {
+//                logger.info( d.toString());
+//
+//            });
+//            logger.info("CONSUMER Started");
+//            countDownLatch.await();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
