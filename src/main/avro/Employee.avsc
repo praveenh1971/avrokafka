@@ -1,0 +1,12 @@
+{
+  "namespace": "kafka.connect.model.avro",
+  "name": "Employee",
+  "type": "record",
+  "fields": [
+    {"name": "Name","type": "string"},
+    {"name": "lastName", "type": "string"},
+    {"name": "age",  "type": "int"},
+    {"name": "phoneNumber",  "type": "string"}
+    ]
+
+}
