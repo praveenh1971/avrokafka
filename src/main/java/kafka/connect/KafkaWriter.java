@@ -26,7 +26,7 @@ public class KafkaWriter {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ProducerConfig.ACKS_CONFIG, "all");
+        props.put(ProducerConfig.ACKS_CONFIG, "0");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, AvroWriter.class.getName());
         props.put(ProducerConfig.BATCH_SIZE_CONFIG,1);
@@ -49,9 +49,7 @@ public class KafkaWriter {
 
             employees.forEach(ec->{
                 producer.send(new ProducerRecord("newemployees", ec.getName(), ec), (x, e)->{
-                     if (e != null){
-                        System.out.println();
-                     }
+                     System.out.println(" " + x +  " e " + e);
                 });
                 producer.flush();
             });
