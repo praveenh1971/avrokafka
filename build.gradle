@@ -15,14 +15,7 @@ repositories {
 application {
     mainClass = 'kafka.connect.KafkaWriter'
 }
-sourceSets{
-    main {
-        java {
-            include {'build/generated-main-avro-java'}
-        }
 
-    }
-}
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
