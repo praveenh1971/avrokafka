@@ -48,8 +48,9 @@ public class KafkaWriter {
         try {
 
             employees.forEach(ec->{
+                System.out.print("Sending " + ec.getName());
                 producer.send(new ProducerRecord("newemployees", ec.getName(), ec), (x, e)->{
-                     System.out.println(" " + x +  " e " + e);
+                     System.out.println("Sent  " + x +  " e " + e);
                 });
                 producer.flush();
             });
@@ -59,7 +60,7 @@ public class KafkaWriter {
             e.printStackTrace();
         }
 
-
+        System.out.print("CONSUMER Starting");
         KafkaConsumer kafkaConsumer = new KafkaConsumer(props);
         ArrayList<String> arrayList = new ArrayList<String>();
         arrayList.add("newemployees");
@@ -70,6 +71,7 @@ public class KafkaWriter {
                 System.out.println( d.toString());
 
             });
+            System.out.print("CONSUMER Started");
             countDownLatch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
