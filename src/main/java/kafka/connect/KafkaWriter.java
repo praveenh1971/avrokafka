@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Logger;
 
 public class KafkaWriter {
     public static void main(String[] args) {
+        Logger logger = Logger.getLogger(KafkaWriter.class.getCanonicalName());
         CountDownLatch countDownLatch = new CountDownLatch(1);
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -50,17 +52,17 @@ public class KafkaWriter {
             employees.forEach(ec->{
                 System.out.print("Sending " + ec.getName());
                 producer.send(new ProducerRecord("newemployees", ec.getName(), ec), (x, e)->{
-                     System.out.println("Sent  " + x +  " e " + e);
+                    logger.info("Sent  " + x +  " e " + e);
                 });
                 producer.flush();
             });
 
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
         }
 
-        System.out.print("CONSUMER Starting");
+        logger.info("CONSUMER Starting");
         KafkaConsumer kafkaConsumer = new KafkaConsumer(props);
         ArrayList<String> arrayList = new ArrayList<String>();
         arrayList.add("newemployees");
@@ -68,10 +70,10 @@ public class KafkaWriter {
         ConsumerRecords records = kafkaConsumer.poll(Duration.ofMillis(1000));
         try {
             records.forEach(d -> {
-                System.out.println( d.toString());
+                logger.info( d.toString());
 
             });
-            System.out.print("CONSUMER Started");
+            logger.info("CONSUMER Started");
             countDownLatch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
