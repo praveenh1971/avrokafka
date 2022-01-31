@@ -1,5 +1,6 @@
 package kafka.connect.model;
 
+import kafka.connect.model.avro.Employee;
 import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.specific.SpecificDatumReader;
@@ -17,7 +18,7 @@ public class AvroReader implements Deserializer {
         try {
 
             Decoder decoder = DecoderFactory.get().jsonDecoder(  employee.getSchema(),new ByteArrayInputStream(data));
-            SpecificDatumReader<SpecificRecord> datumReader = new SpecificDatumReader();
+            SpecificDatumReader<SpecificRecord> datumReader = new SpecificDatumReader(employee.getSchema());
             SpecificRecord record = datumReader.read(null, decoder);
             return  record;
         } catch (IOException e) {

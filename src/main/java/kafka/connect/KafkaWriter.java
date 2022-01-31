@@ -1,5 +1,6 @@
 package kafka.connect;
 
+import kafka.connect.model.avro.Employee;
 import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.Encoder;
@@ -23,31 +24,24 @@ import java.util.logging.Logger;
 
 public class KafkaWriter {
     public static void main(String[] args) {
-
-        try {
-
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Employee employee = Employee.newBuilder().setAge(11).setName("AArush").setLastName("Marchareddy").setPhoneNumber("6094249761").build();
-
-        SpecificDatumWriter<Employee> specificDatumWriter = new SpecificDatumWriter<Employee>();
-        Encoder encoder = EncoderFactory.get().jsonEncoder(employee.getSchema(),outputStream);
-        specificDatumWriter.write(employee, encoder);
-
-            encoder.flush();
-            byte[] bytes = outputStream.toByteArray();
-            SpecificDatumReader<Employee>  datumReader = new SpecificDatumReader<Employee>(employee.getSchema());
-            Decoder decoder = DecoderFactory.get().jsonDecoder(employee.getSchema(), new ByteArrayInputStream(bytes));
-            Employee record = datumReader.read(null, decoder);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
-        Logger logger = Logger.getLogger(KafkaWriter.class.getCanonicalName());
+            Logger logger = Logger.getLogger(KafkaWriter.class.getCanonicalName());
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        Employee employee = Employee.newBuilder().setAge(11).setName("AArush").setLastName("Marchareddy").setPhoneNumber("6094249761").build();
+//
+//        SpecificDatumWriter<Employee> specificDatumWriter = new SpecificDatumWriter<Employee>(employee.getSchema());
+//        Encoder encoder = EncoderFactory.get().jsonEncoder(employee.getSchema(),outputStream);
+//        specificDatumWriter.write(employee, encoder);
+//
+//            encoder.flush();
+//            byte[] bytes = outputStream.toByteArray();
+//            SpecificDatumReader<Employee>  datumReader = new SpecificDatumReader<Employee>(employee.getSchema());
+//            Decoder decoder = DecoderFactory.get().jsonDecoder(employee.getSchema(), new ByteArrayInputStream(bytes));
+//            Employee record = datumReader.read(null, decoder);
+//            logger.info(record.toString());
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         CountDownLatch countDownLatch = new CountDownLatch(1);
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");

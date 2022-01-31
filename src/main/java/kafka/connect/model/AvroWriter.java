@@ -1,6 +1,7 @@
 package kafka.connect.model;
 
 
+import kafka.connect.model.avro.Employee;
 import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DatumWriter;
@@ -21,11 +22,12 @@ public class AvroWriter<T extends SpecificRecord>  implements Serializer<T> {
 
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            SpecificDatumWriter<SpecificRecord> specificDatumWriter = new SpecificDatumWriter<SpecificRecord>();
+            SpecificDatumWriter<SpecificRecord> specificDatumWriter = new SpecificDatumWriter<SpecificRecord>(record.getSchema());
            Encoder encoder = EncoderFactory.get().jsonEncoder(record.getSchema(),outputStream);
            specificDatumWriter.write(data, encoder);
             encoder.flush();
             byte[] bytes = outputStream.toByteArray();
+
            return bytes;
         } catch (IOException e) {
             e.printStackTrace();
