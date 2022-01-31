@@ -62,22 +62,16 @@ public class KafkaWriter {
         employees.add ( Employee.newBuilder().setAge(11).setName("Arnav").setLastName("Marchareddy").setPhoneNumber("6094249761").build());
         employees.add ( Employee.newBuilder().setAge(33).setName("Leena").setLastName("Marchareddy").setPhoneNumber("6094249761").build());
         employees.add ( Employee.newBuilder().setAge(44).setName("Praveen").setLastName("Marchareddy").setPhoneNumber("6094249761").build());
-
-
         KafkaProducer producer = new KafkaProducer(props);
-//
         try {
-
-            employees.forEach(ec->{
+           employees.forEach(ec->{
                 logger.info("Sending " + ec.getName());
-                producer.send(new ProducerRecord("employeesname", ec.getName(), ec.getName()), (x, e)->{
+                producer.send(new ProducerRecord("employeesname", ec.getName(), ec), (x, e)->{
                     logger.info("Sent  " + x +  " e " + e);
                 });
                 producer.flush();
             });
-
-
-        } catch (Throwable e) {
+       } catch (Throwable e) {
             logger.info(e.getMessage());
         }
 
