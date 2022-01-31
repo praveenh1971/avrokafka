@@ -1,5 +1,7 @@
 package kafka.connect;
 
+import kafka.connect.model.AvroReader;
+import kafka.connect.model.AvroWriter;
 import kafka.connect.model.avro.Employee;
 import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
@@ -50,10 +52,10 @@ public class KafkaWriter {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ProducerConfig.ACKS_CONFIG, "1");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, AvroWriter.class.getName());
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "emp33");
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, AvroReader.class.getName());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "emp11");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
         ArrayList<Employee> employees = new ArrayList<Employee>();
         employees.add ( Employee.newBuilder().setAge(11).setName("AArush").setLastName("Marchareddy").setPhoneNumber("6094249761").build());
