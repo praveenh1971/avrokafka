@@ -1,6 +1,7 @@
 package kafka.connect.model;
 
 
+import kafka.connect.KafkaWriter;
 import kafka.connect.model.avro.Employee;
 import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.generic.GenericRecord;
@@ -13,9 +14,10 @@ import org.apache.kafka.common.serialization.Serializer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class AvroWriter<T extends SpecificRecord>  implements Serializer<T> {
-
+    Logger logger = Logger.getLogger(AvroWriter.class.getCanonicalName());
     @Override
     public byte[] serialize(String topic, T data) {
         SpecificRecord record = data;
@@ -27,7 +29,7 @@ public class AvroWriter<T extends SpecificRecord>  implements Serializer<T> {
            specificDatumWriter.write(data, encoder);
             encoder.flush();
             byte[] bytes = outputStream.toByteArray();
-
+            logger.info("Wrote record " + bytes.length);
            return bytes;
         } catch (IOException e) {
             e.printStackTrace();

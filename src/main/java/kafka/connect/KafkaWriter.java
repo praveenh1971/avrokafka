@@ -69,7 +69,7 @@ public class KafkaWriter {
         try {
 
             employees.forEach(ec->{
-                System.out.print("Sending " + ec.getName());
+                logger.info("Sending " + ec.getName());
                 producer.send(new ProducerRecord("employeesname", ec.getName(), ec.getName()), (x, e)->{
                     logger.info("Sent  " + x +  " e " + e);
                 });
