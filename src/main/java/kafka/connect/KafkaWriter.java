@@ -78,7 +78,7 @@ public class KafkaWriter {
         logger.info("CONSUMER Starting");
         KafkaConsumer kafkaConsumer = new KafkaConsumer(props);
         ArrayList<String> arrayList = new ArrayList<String>();
-        arrayList.add("newemployees");
+        arrayList.add("employeesname");
         kafkaConsumer.subscribe(arrayList);
         ConsumerRecords records = kafkaConsumer.poll(Duration.ofMillis(1000));
         try {
